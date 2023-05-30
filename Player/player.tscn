@@ -1,0 +1,156 @@
+[gd_scene load_steps=15 format=3 uid="uid://75idli65k4ci"]
+
+[ext_resource type="Script" path="res://Player/Scripts/PlayerMovement.gd" id="1_n701o"]
+[ext_resource type="Script" path="res://Player/Scripts/CameraController.gd" id="2_f2wqr"]
+[ext_resource type="Script" path="res://Player/Scripts/AimCast.gd" id="3_30owi"]
+[ext_resource type="PackedScene" uid="uid://5664w6w8hpls" path="res://Assets/Character/PlayerAnim.tscn" id="4_bg7yu"]
+[ext_resource type="Curve" uid="uid://cvfebyl4reits" path="res://Assets/Character/BlendCurve.tres" id="5_3cwna"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sg6l4"]
+radius = 0.166955
+height = 0.864509
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wfxkk"]
+animation = &"Armature|Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vma0e"]
+animation = &"Armature|Walking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ydo3r"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_x6jnb"]
+xfade_time = 0.1
+xfade_curve = ExtResource("5_3cwna")
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rljk0"]
+xfade_time = 0.1
+xfade_curve = ExtResource("5_3cwna")
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_orqng"]
+states/End/position = Vector2(979, 99.75)
+states/Idle/node = SubResource("AnimationNodeAnimation_wfxkk")
+states/Idle/position = Vector2(697.484, 99.7813)
+states/Start/position = Vector2(251, 100)
+states/Walking/node = SubResource("AnimationNodeAnimation_vma0e")
+states/Walking/position = Vector2(697.906, 4)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_ydo3r"), "Idle", "Walking", SubResource("AnimationNodeStateMachineTransition_x6jnb"), "Walking", "Idle", SubResource("AnimationNodeStateMachineTransition_rljk0")]
+graph_offset = Vector2(141, -75)
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_0nxld"]
+nodes/Stater/node = SubResource("AnimationNodeStateMachine_orqng")
+nodes/Stater/position = Vector2(-130, 250)
+nodes/output/position = Vector2(230, 150)
+node_connections = [&"output", 0, &"Stater"]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_bdv6e"]
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_n701o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.628333, 0)
+shape = SubResource("CapsuleShape3D_sg6l4")
+
+[node name="gameCamera" type="Camera3D" parent="."]
+transform = Transform3D(-0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, 0.5, -0.5, -3, 5.41421, -3)
+current = true
+script = ExtResource("2_f2wqr")
+
+[node name="aimRay" type="RayCast3D" parent="gameCamera"]
+script = ExtResource("3_30owi")
+
+[node name="GunAnim" parent="." instance=ExtResource("4_bg7yu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="Skeleton3D" parent="GunAnim/RootNode/Armature" index="0"]
+bones/0/position = Vector3(0.0487045, 1.03201, 0.0282954)
+bones/0/rotation = Quaternion(0.000672885, -0.0410841, -0.0246385, 0.998852)
+bones/1/rotation = Quaternion(-0.0704907, 0.004723, 0.0150732, 0.997387)
+bones/2/rotation = Quaternion(0.0193829, 0.0074906, 0.0270305, 0.999419)
+bones/3/rotation = Quaternion(0.0322595, 0.00783826, 0.0269317, 0.999086)
+bones/4/rotation = Quaternion(-0.092245, 0.0006097, -0.000678852, 0.995736)
+bones/5/rotation = Quaternion(0.0347347, 0.0118885, -0.0420223, 0.998442)
+bones/8/rotation = Quaternion(0.537964, -0.530769, 0.543327, 0.365617)
+bones/9/rotation = Quaternion(0.489388, -0.294052, -0.192819, 0.798031)
+bones/10/rotation = Quaternion(0.000646671, 0.00479553, -0.13363, 0.99102)
+bones/11/rotation = Quaternion(-0.208899, 0.257015, -0.0881145, 0.939436)
+bones/12/rotation = Quaternion(0.203877, 0.150569, -0.111175, 0.960939)
+bones/13/rotation = Quaternion(-0.0411616, -0.0093432, 0.139045, 0.989386)
+bones/14/rotation = Quaternion(-0.00166426, -0.000807539, 0.00691988, 0.999974)
+bones/17/rotation = Quaternion(0.119975, 0.064638, 0.0617951, 0.988741)
+bones/18/rotation = Quaternion(0.0465614, -0.000134157, 0.00530673, 0.998901)
+bones/22/rotation = Quaternion(0.121033, 0.00716735, 0.0528572, 0.991214)
+bones/23/rotation = Quaternion(0.0920067, 0.000510301, -0.00329119, 0.995753)
+bones/27/rotation = Quaternion(0.177742, 0.0112719, 0.0337138, 0.983435)
+bones/28/rotation = Quaternion(0.0823714, 0.00278303, -0.00441989, 0.996588)
+bones/32/rotation = Quaternion(0.194902, -0.00681055, 0.0331358, 0.980239)
+bones/33/rotation = Quaternion(0.109759, 0.00736496, -0.0357479, 0.993288)
+bones/37/rotation = Quaternion(-0.569092, -0.503619, 0.53912, -0.363113)
+bones/38/rotation = Quaternion(0.51166, 0.212804, 0.212679, 0.80479)
+bones/39/rotation = Quaternion(0.000408184, -0.00434939, 0.0933439, 0.995624)
+bones/40/rotation = Quaternion(-0.101379, -0.153833, 0.143511, 0.972349)
+bones/41/rotation = Quaternion(0.218999, -0.11901, 0.125238, 0.960308)
+bones/42/rotation = Quaternion(-0.050576, 0.017804, -0.101031, 0.993437)
+bones/46/rotation = Quaternion(0.118112, -0.0682917, -0.0985489, 0.985735)
+bones/47/rotation = Quaternion(0.0991951, 0.00383948, -0.0100274, 0.99501)
+bones/51/rotation = Quaternion(0.0928349, -0.0125642, -0.0593257, 0.993833)
+bones/52/rotation = Quaternion(0.0904089, 9.7198e-05, 0.00258413, 0.995901)
+bones/56/rotation = Quaternion(0.166226, 0.00702305, -0.0591034, 0.98429)
+bones/57/rotation = Quaternion(0.0910657, -0.000952827, -0.000887267, 0.995844)
+bones/61/rotation = Quaternion(0.243911, 0.0416529, -0.0705894, 0.966328)
+bones/62/rotation = Quaternion(0.142728, -0.000830829, 0.0246315, 0.989455)
+bones/66/rotation = Quaternion(-0.0601124, 0.0352252, 0.995977, -0.0563449)
+bones/67/rotation = Quaternion(-0.115871, -0.000145853, 0.00240219, 0.993261)
+bones/68/rotation = Quaternion(0.495236, 0.0889182, -0.0703196, 0.86133)
+bones/69/rotation = Quaternion(0.357823, -0.00780368, 0.00607019, 0.933737)
+bones/72/rotation = Quaternion(0.0249083, 0.13718, 0.98745, -0.0741912)
+bones/73/rotation = Quaternion(-0.16336, -0.000734955, -0.00469568, 0.986555)
+bones/74/rotation = Quaternion(0.427907, -0.155483, 0.0394365, 0.889475)
+bones/75/rotation = Quaternion(0.334605, -0.0209727, 0.0190829, 0.941932)
+
+[node name="AimIK" type="SkeletonIK3D" parent="GunAnim/RootNode/Armature/Skeleton3D" index="2"]
+process_priority = 1
+root_bone = &"mixamorig_RightArm"
+tip_bone = &"mixamorig_RightHand"
+override_tip_basis = false
+use_magnet = true
+target_node = NodePath("../../../../../TargetNode")
+
+[node name="GunSlot" type="BoneAttachment3D" parent="GunAnim/RootNode/Armature/Skeleton3D" index="3"]
+transform = Transform3D(0.0849256, -0.367911, 0.925975, 0.334443, -0.864891, -0.374314, 0.938581, 0.341475, 0.0495937, -0.160109, 0.851646, -0.0560405)
+bone_name = "mixamorig_RightHand"
+bone_idx = 11
+
+[node name="bulletRay" type="RayCast3D" parent="GunAnim/RootNode/Armature/Skeleton3D/GunSlot"]
+
+[node name="LookIK" type="SkeletonIK3D" parent="GunAnim/RootNode/Armature/Skeleton3D" index="4"]
+process_priority = 1
+root_bone = &"mixamorig_Spine"
+tip_bone = &"mixamorig_Head"
+use_magnet = true
+target_node = NodePath("../../../../../HeadAnchor/HeadTarget")
+
+[node name="AnimationTree" type="AnimationTree" parent="GunAnim"]
+tree_root = SubResource("AnimationNodeBlendTree_0nxld")
+anim_player = NodePath("../AnimationPlayer")
+active = true
+root_motion_track = NodePath("RootNode/Armature/Skeleton3D:mixamorig_Hips")
+parameters/Stater/playback = SubResource("AnimationNodeStateMachinePlayback_bdv6e")
+
+[node name="TargetNode" type="Node3D" parent="."]
+
+[node name="Shot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23269, 0.341098, 0.320736)
+visible = false
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Shot"]
+
+[node name="HeadAnchor" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.628336, 0)
+
+[node name="HeadTarget" type="Node3D" parent="HeadAnchor"]
+transform = Transform3D(0.479259, 0, 0.877674, 0, 1, 0, -0.877674, 0, 0.479259, 0, 0, 0)
+
+[editable path="GunAnim"]

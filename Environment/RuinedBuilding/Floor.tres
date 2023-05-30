@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://brvbrpmxyw7m1"]
+
+[ext_resource type="Texture2D" uid="uid://cb6inu24w3p0o" path="res://Environment/RuinedBuilding/Textures/floor.jpg" id="1_yc438"]
+[ext_resource type="Texture2D" uid="uid://s82uhthaoas3" path="res://Environment/RuinedBuilding/Textures/floor normal.jpg" id="2_bgh3m"]
+[ext_resource type="Texture2D" uid="uid://bnioclruemxpn" path="res://Environment/RuinedBuilding/Textures/floor roughness.jpg" id="3_xf21d"]
+
+[resource]
+albedo_texture = ExtResource("1_yc438")
+roughness_texture = ExtResource("3_xf21d")
+normal_enabled = true
+normal_texture = ExtResource("2_bgh3m")
