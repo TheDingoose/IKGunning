@@ -52,9 +52,6 @@ func _ready():
 	stateMachine = $GunAnim/AnimationTree.get("parameters/Stater/playback")
 	$GunAnim/RootNode/Armature/Skeleton3D/LookIK.start(false)
 	$GunAnim/RootNode/Armature/Skeleton3D.physical_bones_start_simulation()
-	print($GunAnim/RootNode/Armature/Skeleton3D/PhysicalBone3D.get_simulate_physics())
-	
-	
 	
 func _physics_process(delta):
 	# Add the gravity.
